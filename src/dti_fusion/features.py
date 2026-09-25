@@ -19,6 +19,8 @@ def morgan_fingerprint(smiles: str, radius: int, nbits: int):
     from rdkit import Chem
     from rdkit.Chem import rdFingerprintGenerator
 
+    if not smiles or not isinstance(smiles, str):
+        return None  # None/empty input is unparseable, not a C++ TypeError
     mol = Chem.MolFromSmiles(smiles)
     if mol is None:
         return None
