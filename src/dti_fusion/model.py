@@ -15,7 +15,8 @@ class BranchMLP(nn.Module):
     def __init__(self, d_dim: int, p_dim: int, hidden: int, dropout: float,
                  mode: str = "fusion"):
         super().__init__()
-        assert mode in ("fusion", "drug", "protein")
+        if mode not in ("fusion", "drug", "protein"):
+            raise ValueError(f"unknown mode {mode!r}")
         self.mode = mode
         self.drug_branch = nn.Sequential(
             nn.Linear(d_dim, hidden), nn.ReLU(), nn.Dropout(dropout)

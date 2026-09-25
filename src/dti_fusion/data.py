@@ -32,7 +32,10 @@ def fetch_raw(base_url: str, raw_dir: str):
     for name in ("proteins.txt", "ligands_can.txt", "Y"):
         p = out / name
         if not p.exists():
-            p.write_bytes(_get(f"{base_url}/{name}"))
+            tmp = p.with_suffix(p.suffix + ".part")
+            tmp.write_bytes(_get(f"{base_url}/{name}"))
+            tmp.rename(p)  # atomic: an interrupted fetch can't leave a
+            # truncated file that later runs silently reuse
     return out
 
 
