@@ -1,5 +1,5 @@
 """Splitters. Primary eval is cold-target: held-out proteins never appear
-in training — the honest estimate for "predict affinity for a protein we
+in training: the prospective estimate for "predict affinity for a protein we
 haven't screened." Random split is reported as secondary (it leaks target
 identity and is expected to look better).
 """

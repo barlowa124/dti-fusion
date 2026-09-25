@@ -67,7 +67,7 @@ def main(feat_npz: str, out_json: str, out_png: str):
         "cold_target": cold_metrics,
         "random_split_fusion": None,
     }
-    # secondary: random split, fusion only — reported as the leaky variant
+    # secondary: random split, fusion only, reported as the leaky variant
     pred_r = train_model("fusion", Xd, xp, y, tr_r, te_r, cfg["model"],
                          cfg["model"]["seed"])
     result["random_split_fusion"] = metrics(y[te_r], pred_r)

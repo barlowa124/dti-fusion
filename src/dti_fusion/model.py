@@ -2,7 +2,7 @@
 
 Fusion: drug fingerprint -> linear, protein embedding -> linear, concat ->
 MLP -> scalar pKd. The ablations share the same head shape so the only
-difference is which modality enters — the honest test of whether combining
+difference is which modality enters, the controlled test of whether combining
 modalities beats either alone.
 """
 

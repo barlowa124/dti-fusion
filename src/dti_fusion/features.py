@@ -1,7 +1,7 @@
 """Modality encoders.
 
 Drug modality: Morgan fingerprint (ECFP-style, radius/bits from config).
-Protein modality: mean-pooled ESM-2 last hidden state — a protein language
+Protein modality: mean-pooled ESM-2 last hidden state, a protein language
 model embedding, the standard zero-shot protein representation. Sequences
 are truncated to the model's context and the truncation is recorded.
 """
