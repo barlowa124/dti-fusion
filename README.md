@@ -18,7 +18,7 @@ training?
   are truncated and the truncation is logged.
 - **Fusion**: each modality gets its own linear branch. Concatenated
   branches feed a shared MLP head regressing pKd (`-log10(Kd/1e9)`;
-  DAVIS's 10 uM cap becomes the pKd 5.0 floor, 69.6% of pairs are at cap).
+  DAVIS's 10 uM cap becomes the pKd 5.0 floor. 69.6% of pairs are at cap).
 - **Primary split: cold-target** (88 held-out proteins, zero overlap with
   training). Random split is reported secondarily and labeled leaky.
 - **Ablations**: identical head trained drug-only and protein-only.
@@ -50,8 +50,8 @@ Cold-target holdout (the prospective number for "new protein, known drugs"):
   "rank the binders vs the cap," not full-affinity regression.
 - ESM-2 truncation means 25% of pairs use a partial protein sequence.
 - One seed, one split, no hyperparameter search. Kept as a baseline.
-- Protein-only isn't "no drug info": the head still sees the drug index
-  through shared training dynamics only via the protein branch input.
+- Cold-target holds out proteins only. All 68 drugs appear in training,
+  so fusion and drug-only heads can still lean on memorized drug identity.
 
 ## Run
 
