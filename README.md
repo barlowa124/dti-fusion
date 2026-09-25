@@ -5,7 +5,7 @@ language-model embedding -> kinase affinity** on DAVIS (30,056 drug-protein
 pairs, 68 drugs x 442 kinases), evaluated on held-out proteins.
 
 **Status: working demonstration.** Snakemake DAG runs fetch -> featurize ->
-train -> evaluate. The point is the fusion ablation: does combining the two
+train -> evaluate. The demonstration is the fusion ablation: does combining the two
 modalities beat either alone when the test proteins were never seen in
 training?
 
@@ -14,9 +14,9 @@ training?
 - **Drug modality**: Morgan fingerprint (radius 2, 2048 bits, RDKit).
 - **Protein modality**: mean-pooled ESM-2 (`esm2_t6_8M_UR50D`, 320-dim)
   embedding, a protein language model, not a hand-engineered descriptor.
-  25% of pairs involve proteins longer than the 1024-token context; they
+  25% of pairs involve proteins longer than the 1024-token context. They
   are truncated and the truncation is logged.
-- **Fusion**: each modality gets its own linear branch; concatenated
+- **Fusion**: each modality gets its own linear branch. Concatenated
   branches feed a shared MLP head regressing pKd (`-log10(Kd/1e9)`;
   DAVIS's 10 uM cap becomes the pKd 5.0 floor, 69.6% of pairs are at cap).
 - **Primary split: cold-target** (88 held-out proteins, zero overlap with
@@ -34,12 +34,11 @@ Cold-target holdout (the prospective number for "new protein, known drugs"):
 | protein only | 0.828 (0.79–0.87) | 0.755 | 0.255 | 0.203 |
 | fusion, random split | 0.514 | 0.534 | 0.638 | 0.592 |
 
-How the table reads:
 
 - **Fusion wins on ranking and MSE** on unseen proteins, since the two
   modalities carry complementary signal. That is the claim.
-- Drug-only is a surprisingly strong ablation (drug identity alone
-  explains a lot of DAVIS) and edges fusion on MAE.
+- Drug-only is a strong ablation (drug identity alone
+  explains much of DAVIS) and edges fusion on MAE.
 - Protein-only is weakest but non-trivial: the ESM-2 embedding alone ranks
   affinities on never-seen proteins at Spearman 0.20.
 - Random vs cold-target Spearman (0.59 vs 0.54) shows the leakage cost is
@@ -50,7 +49,7 @@ How the table reads:
 - DAVIS is 69.6% at-cap pairs (pKd 5.0 floor), so the task is partly
   "rank the binders vs the cap," not full-affinity regression.
 - ESM-2 truncation means 25% of pairs use a partial protein sequence.
-- One seed, one split; no hyperparameter search. Kept as a baseline.
+- One seed, one split, no hyperparameter search. Kept as a baseline.
 - Protein-only isn't "no drug info": the head still sees the drug index
   through shared training dynamics only via the protein branch input.
 
