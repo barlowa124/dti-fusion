@@ -16,7 +16,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 
-from dti_fusion.config import load_config
+from dti_fusion.config import config_path, load_config
 from dti_fusion.model import metrics, mse, train_model
 from dti_fusion.provenance import write_manifest
 from dti_fusion.splits import cold_target_split, random_split
@@ -84,7 +84,7 @@ def main(feat_npz: str, out_json: str, out_png: str):
     fig.tight_layout()
     fig.savefig(out_png, dpi=140)
 
-    write_manifest("results/provenance.json", inputs=[feat_npz])
+    write_manifest("results/provenance.json", inputs=[feat_npz], config_path=str(config_path()))
     print("done")
 
 
