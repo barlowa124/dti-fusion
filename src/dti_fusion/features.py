@@ -97,6 +97,8 @@ def main(in_parquet: str, out_npz: str):
     np.savez_compressed(
         out_npz, X_drug=X_drug, X_prot=X_prot,
         pkd=df["pkd"].to_numpy(), target_id=df["target_id"].to_numpy(),
+        frac_at_cap=np.float64(df["at_cap"].mean()),
+        frac_truncated=np.float64(n_trunc / len(df)),
     )
     print(
         f"features: drug {X_drug.shape}, protein {X_prot.shape} "

@@ -64,6 +64,10 @@ def main(feat_npz: str, out_json: str, out_png: str):
         "primary_split": "cold_target",
         "n_pairs": int(len(y)),
         "n_targets_held_out": int(len(np.unique(targets[te_c]))),
+        "frac_at_cap": float(d["frac_at_cap"]) if "frac_at_cap" in d else None,
+        "frac_truncated": (
+            float(d["frac_truncated"]) if "frac_truncated" in d else None
+        ),
         "cold_target": cold_metrics,
         "random_split_fusion": None,
     }

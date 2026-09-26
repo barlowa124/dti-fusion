@@ -14,11 +14,13 @@ training?
 - **Drug modality**: Morgan fingerprint (radius 2, 2048 bits, RDKit).
 - **Protein modality**: mean-pooled ESM-2 (`esm2_t6_8M_UR50D`, 320-dim)
   embedding, a protein language model, not a hand-engineered descriptor.
-  25% of pairs involve proteins longer than the 1024-token context. They
-  are truncated and the truncation is logged.
+  24.7% of pairs involve proteins longer than the 1024-token context. They
+  are truncated and the truncation is logged (`frac_truncated` in
+  `results/summary.json`).
 - **Fusion**: each modality gets its own linear branch. Concatenated
   branches feed a shared MLP head regressing pKd (`-log10(Kd/1e9)`;
-  DAVIS's 10 uM cap becomes the pKd 5.0 floor. 69.6% of pairs are at cap).
+  DAVIS's 10 uM cap becomes the pKd 5.0 floor. 69.6% of pairs are at cap,
+  `frac_at_cap` in `results/summary.json`).
 - **Primary split: cold-target** (88 held-out proteins, zero overlap with
   training). Random split is reported secondarily and labeled leaky.
 - **Ablations**: identical head trained drug-only and protein-only.
