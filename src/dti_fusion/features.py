@@ -56,27 +56,33 @@ def drug_fingerprints(smiles_list, spec: str) -> np.ndarray:
 
 
 def protein_embeddings(seqs, model_name: str, max_len: int) -> np.ndarray:
-    """Mean-pooled ESM-2 last hidden state, (n, d_model) float32."""
-    import torch
-    from transformers import AutoModel, AutoTokenizer
+    """Mean-pooled ESM-2 last hidden state, (n, d_model) float32.
 
-    tok = AutoTokenizer.from_pretrained(model_name)
-    model = AutoModel.from_pretrained(model_name)
-    model.eval()
-    embs = []
-    with torch.no_grad():
-        for s in seqs:
-            truncated = len(s) > max_len
-            enc = tok(
-                s[:max_len], return_tensors="pt", truncation=True,
-                max_length=max_len,
-            )
-            out = model(**enc).last_hidden_state[0]
-            mask = enc["attention_mask"][0].bool()
-            embs.append(out[mask].mean(0).numpy())
-            if truncated:
-                pass  # truncation recorded by caller via seq lengths
-    return np.stack(embs).astype(np.float32)
+    Results persist in the shared ESM_CACHE_DIR store (vendored
+    esm_cache) keyed on the truncated sequence actually embedded."""
+    from dti_fusion.esm_cache import get_many, put
+
+    effective = [s[:max_len] for s in seqs]
+    values, misses = get_many("esm2-embed", model_name, effective)
+    if misses:
+        import torch
+        from transformers import AutoModel, AutoTokenizer
+
+        tok = AutoTokenizer.from_pretrained(model_name)
+        model = AutoModel.from_pretrained(model_name)
+        model.eval()
+        with torch.no_grad():
+            for i in misses:
+                enc = tok(
+                    effective[i], return_tensors="pt", truncation=True,
+                    max_length=max_len,
+                )
+                out = model(**enc).last_hidden_state[0]
+                mask = enc["attention_mask"][0].bool()
+                emb = out[mask].mean(0).numpy()
+                values[i] = emb
+                put("esm2-embed", model_name, effective[i], emb)
+    return np.stack(values).astype(np.float32)
 
 
 def main(in_parquet: str, out_npz: str):
