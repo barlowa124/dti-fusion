@@ -72,3 +72,7 @@ DAVIS via the GraphDTA mirror (`thinng/GraphDTA`, `data/davis/`):
 `proteins.txt` (442 kinase sequences), `ligands_can.txt` (68 canonical
 SMILES), `Y` (68x442 pickled Kd matrix, nM). Original study: Davis et al.,
 Nat Biotechnol 2011.
+
+## Related work
+
+- [protein-design-ops](https://github.com/barlowa124/protein-design-ops) and [active-learning-loop](https://github.com/barlowa124/active-learning-loop) share the ESM-2 encoder used for target embeddings here.
