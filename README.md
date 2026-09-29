@@ -18,7 +18,7 @@ training?
   are truncated and the truncation is logged (`frac_truncated` in
   `results/summary.json`).
 - **Fusion**: each modality gets its own linear branch. Concatenated
-  branches feed a shared MLP head regressing pKd (`-log10(Kd/1e9)`;
+  branches feed a shared MLP head regressing pKd (`-log10(Kd/1e9)`).
   DAVIS's 10 uM cap becomes the pKd 5.0 floor. 69.6% of pairs are at cap,
   `frac_at_cap` in `results/summary.json`).
 - **Primary split: cold-target** (88 held-out proteins, zero overlap with
