@@ -1,3 +1,7 @@
+> **This repository has moved.** Active development continues in [barlowa124/mol-ml](https://github.com/barlowa124/mol-ml) under [`dti_fusion/`](https://github.com/barlowa124/mol-ml/tree/main/dti_fusion). This repo is archived and kept for link stability.
+
+---
+
 # dti-fusion
 
 Multimodal drug-target interaction regression: **drug fingerprint + protein
